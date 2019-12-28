@@ -7,17 +7,21 @@ Uses PyGame for graphics rendering.
 import sys
 import pygame
 from configuration import AppConfig
-
+from DrawPrimitives import DrawPrimitives
 done = False
 app_running = False
 
 cfg = AppConfig('GoL.ini')
+dp = DrawPrimitives(cfg)
 
 pygame.init()
 clock = pygame.time.Clock()
 
-display_window = pygame.display.set_mode((cfg.initial_screen_width, cfg.initial_screen_height))
+display_window = pygame.display.set_mode((cfg.adjusted_screen_width, cfg.adjusted_screen_height))
 
+dp.draw_grid(display_window)
+
+# The main (infinite until interrupted) application loop.
 while not done:
 
     # Handle application interrupts - effectively mouse and keyboard input.
