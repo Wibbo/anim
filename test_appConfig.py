@@ -63,7 +63,8 @@ def test_string_to_boolean_05():
     assert AppConfig.string_to_boolean('False') == False
 
 
-
+def test_line_width(app_settings):
+    assert app_settings.line_width == 1
 
 
 

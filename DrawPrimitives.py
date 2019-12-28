@@ -1,4 +1,5 @@
 import pygame
+import numpy
 
 
 class DrawPrimitives:
@@ -64,5 +65,36 @@ class DrawPrimitives:
         :return: Nothing
         """
         self.draw_cell(screen, col, row, self.cfg.inactive_cell_colour)
+
+    def draw_cells_from_array(self, screen, grid_array):
+
+        number_of_rows = grid_array.shape[0]
+        number_of_columns = grid_array.shape[1]
+
+        if number_of_rows != self.cfg.row_count:
+            raise ValueError('The array parameter must have the same number of rows as the row count.')
+
+        if number_of_columns != self.cfg.column_count:
+            raise ValueError('The array parameter must have the same number of columns as the column count.')
+
+        for i in range(number_of_rows):
+            for j in range(number_of_columns):
+                if grid_array[i][j] == 1:
+                    self.draw_active_cell(screen, j, i)
+                elif grid_array[i][j] == 0:
+                    self.draw_inactive_cell(screen, j, i)
+                else:
+                    raise ValueError(f'All array elements should be zero or 1.')
+
+
+
+
+
+
+
+
+
+
+
 
 

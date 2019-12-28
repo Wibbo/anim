@@ -8,6 +8,14 @@ import sys
 import pygame
 from configuration import AppConfig
 from DrawPrimitives import DrawPrimitives
+import numpy as np
+
+
+def get_random_cell_array(rows, cols):
+    cell_size = (rows, cols)
+    return np.random.randint(2, size=cell_size)
+
+
 done = False
 app_running = False
 
@@ -20,6 +28,11 @@ clock = pygame.time.Clock()
 display_window = pygame.display.set_mode((cfg.adjusted_screen_width, cfg.adjusted_screen_height))
 
 dp.draw_grid(display_window)
+
+dp.draw_cells_from_array(display_window, get_random_cell_array(cfg.row_count, cfg.column_count))
+
+
+
 
 # The main (infinite until interrupted) application loop.
 while not done:
