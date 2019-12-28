@@ -78,4 +78,6 @@ class AppConfig:
         self.active_cell_colour = json.loads(cfg['COLOUR']['active_cell_colour'])
         self.inactive_cell_colour = json.loads(cfg['COLOUR']['inactive_cell_colour'])
 
+        self.draw_random_cells = cfg['ACTIONS']['draw_random_cells']
+        self.draw_random_cells = self.string_to_boolean(self.draw_random_cells)
 

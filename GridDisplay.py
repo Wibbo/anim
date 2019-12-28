@@ -2,11 +2,11 @@ import pygame
 import numpy
 
 
-class DrawPrimitives:
+class GridDisplay:
 
     def __init__(self, cfg):
         """
-        Constructor for the DrawPrimitives class. Receives configuration settings.
+        Constructor for the GridDisplay class. Receives configuration settings.
         :param cfg: Configuration details from the INI file, adjusted and exposed as necessary by AppConfig.
         """
         self.cfg = cfg
@@ -46,6 +46,10 @@ class DrawPrimitives:
 
         pygame.draw.rect(screen, rgb, pygame.Rect(left, top, width, height))
 
+    def is_cell_active(self):
+        pass
+
+
     def draw_active_cell(self, screen, col, row):
         """
         Draws a cell using the active cell colour defined in the INI file.
@@ -65,6 +69,11 @@ class DrawPrimitives:
         :return: Nothing
         """
         self.draw_cell(screen, col, row, self.cfg.inactive_cell_colour)
+
+
+
+
+
 
     def draw_cells_from_array(self, screen, grid_array):
 
@@ -86,6 +95,13 @@ class DrawPrimitives:
                 else:
                     raise ValueError(f'All array elements should be zero or 1.')
 
+
+
+
+
+
+    def get_array_from_cells(self):
+        pass
 
 
 

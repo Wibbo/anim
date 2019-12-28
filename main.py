@@ -7,31 +7,41 @@ Uses PyGame for graphics rendering.
 import sys
 import pygame
 from configuration import AppConfig
-from DrawPrimitives import DrawPrimitives
+from GridDisplay import GridDisplay
 import numpy as np
 
 
 def get_random_cell_array(rows, cols):
+    """
+    Creates a 2 dimensional numpy array that represents the application grid. Used mainly for testing, must be the
+    same size as the rows and cols defined in the INI file.
+    Each element is set randomly to either zero or 1.
+    :param rows: The number of rows in the array.
+    :param cols:The number of columns in the array.
+    :return: The [row, col] array filled with ones or zeros.
+    """
     cell_size = (rows, cols)
-    return np.random.randint(2, size=cell_size)
+    grid_array = np.random.randint(2, size=cell_size)
+
+    return grid_array
 
 
 done = False
 app_running = False
 
 cfg = AppConfig('GoL.ini')
-dp = DrawPrimitives(cfg)
+gd = GridDisplay(cfg)
 
 pygame.init()
 clock = pygame.time.Clock()
 
 display_window = pygame.display.set_mode((cfg.adjusted_screen_width, cfg.adjusted_screen_height))
 
-dp.draw_grid(display_window)
+if cfg.draw_grid:
+    gd.draw_grid(display_window)
 
-dp.draw_cells_from_array(display_window, get_random_cell_array(cfg.row_count, cfg.column_count))
-
-
+if cfg.draw_random_cells:
+    gd.draw_cells_from_array(display_window, get_random_cell_array(cfg.row_count, cfg.column_count))
 
 
 # The main (infinite until interrupted) application loop.
