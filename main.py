@@ -18,15 +18,22 @@ def display_help():
     Display help for the application.
     :return: Nothing.
     """
+    print()
+    print('APPLICATION OPTIONS')
+    print('===================')
     print('Clicking on any cell toggles its active state.')
+
     print('A: Create an array from the current status of the grid cells and display it.')
+    print('C: Clears the grid of all active cells (pauses the game if it is not already paused).')
     print('R: Create a random 2D array representing the grid and set cell statuses accordingly.')
     print('N: Create a neighbours array for the current grid and display it.')
 
+
 def read_config_file(ini_file_name):
     """
-    Reads and validates parameters from the application ini file.
-    :return: A parameters object.
+    Read parameters from the application config file.
+    :param ini_file_name: The name of the ini file to read.
+    :return: An object that represents the configuration parameters.
     """
     try:
         params = AppConfig(ini_file_name)
@@ -55,10 +62,12 @@ clock = pygame.time.Clock()
 
 start_game_of_life = False
 
-display_window = pygame.display.set_mode((cfg.adjusted_screen_width, cfg.adjusted_screen_height))
+
+grid_display = pygame.display.set_mode((cfg.adjusted_screen_width, cfg.adjusted_screen_height))
+info_display = pygame.display.set_mode((cfg.adjusted_screen_width, cfg.adjusted_screen_height))
 
 if cfg.draw_grid:
-    gd.draw_grid(display_window)
+    gd.draw_grid(grid_display)
 
 # The main (infinite until interrupted) application loop.
 while not done:
@@ -72,10 +81,10 @@ while not done:
         if event.type == pygame.MOUSEBUTTONDOWN:
             # Toggles the active state of the cell that is clicked.
             cell_row, cell_col = gd.get_cell_from_coordinate(event.pos)
-            if gd.is_cell_active(display_window, cell_row, cell_col):
-                gd.draw_inactive_cell(display_window, cell_col, cell_row)
+            if gd.is_cell_active(grid_display, cell_row, cell_col):
+                gd.draw_inactive_cell(grid_display, cell_col, cell_row)
             else:
-                gd.draw_active_cell(display_window, cell_col, cell_row)
+                gd.draw_active_cell(grid_display, cell_col, cell_row)
         if event.type == pygame.KEYDOWN:
             key_pressed = pygame.key.name(event.key).upper()
 
@@ -84,27 +93,29 @@ while not done:
                 display_help()
             if key_pressed == 'A':
                 print('Creating an array from the cell grid (examining pixel colour')
-                print(gd.get_array_from_cells(display_window))
+                print(gd.get_array_from_cells(grid_display))
             if key_pressed == 'R':
                 print('Drawing cells from a randomly generated array.')
                 cell_array = gd.get_randomly_activated_cell_array()
-                gd.draw_cells_from_array(display_window, cell_array)
+                gd.draw_cells_from_array(grid_display, cell_array)
                 print(cell_array)
             if key_pressed == 'N':
                 print('Creating a cell neighbours array.')
-                neigbour_array = gd.get_cell_neighbours_array(display_window)
+                neigbour_array = gd.get_cell_neighbours_array(grid_display)
                 print(neigbour_array)
+            if key_pressed == 'C':
+                start_game_of_life = False
+                gd.clear_grid(grid_display)
             if key_pressed == 'G':
                 start_game_of_life = True
+                gd.cell_array = gd.get_array_from_cells(grid_display)
             if key_pressed == 'S':
                 start_game_of_life = False
-            if key_pressed == 'F4':
-                pass
 
     if start_game_of_life:
-        gd.update_cell_array(display_window)
+        gd.update_cell_array(grid_display)
 
     # TODO: Look at optimising this by passing a list of rectangles that have changed for certain actions.
     pygame.display.update()
 
-    clock.tick(10)
+    clock.tick(60)

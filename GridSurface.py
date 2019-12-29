@@ -148,8 +148,23 @@ class GridSurface:
         else:
             return True
 
-    def get_array_from_cells(self, screen):
+    def clear_grid(self, screen):
+        cell_array = self.get_empty_grid_array()
+        self.draw_cells_from_array(screen, cell_array)
 
+    def get_empty_grid_array(self):
+        """
+        Creates an empty grid array.
+        :return: A 2D empty array that represents the grid.
+        """
+        return np.zeros([self.cfg.row_count, self.cfg.column_count], dtype=int)
+
+    def get_array_from_cells(self, screen):
+        """
+        Creates a 2D array that represents the current grid.
+        :param screen: A reference to the surface of the application window.
+        :return: An array that represents the current grid state.
+        """
         cell_array = np.zeros([self.cfg.row_count, self.cfg.column_count], dtype=int)
 
         for i in range(self.cfg.row_count):
@@ -160,21 +175,30 @@ class GridSurface:
         return cell_array
 
     def get_cell_neighbours_array(self, screen):
-
+        """
+        Gets an array of neighbours from the existing grid.
+        :param screen: A reference to the surface of the application window.
+        :return: A 2D array representing neighbouring cell counts.
+        """
         self.cell_array = self.get_array_from_cells(screen)
         self.neighbour_array = self.cell_array.copy()
 
-        kernel = np.ones((3, 3), dtype=int)
-        kernel[1, 1] = 0
-        self.neighbour_array = signal.convolve2d(self.cell_array, kernel, mode="same")
+        neighbour_mask = np.ones((3, 3), dtype=int)
+        neighbour_mask[1, 1] = 0
+        self.neighbour_array = signal.convolve2d(self.cell_array, neighbour_mask, mode="same")
 
         return self.neighbour_array
 
     def update_cell_array(self, screen):
-        self.cell_array = self.get_array_from_cells(screen)
+        """
+        Generates an array of neighbouring cells and uses
+        this to determine what happens to the existing cells.
+        :param screen: A reference to the surface of the application window.
+        :return: Nothing.
+        """
         self.neighbour_array = self.get_cell_neighbours_array(screen)
 
-        # Loop through all cells...
+        # Loop through the entire grid and update each cell.
         for row in range(0, self.cfg.row_count):
             for col in range(0, self.cfg.column_count):
                 if self.cell_array[row][col] == 1:
@@ -190,6 +214,7 @@ class GridSurface:
                     if self.neighbour_array[row][col] == 3:
                         self.cell_array[row][col] = 1
 
+        # Update the grid.
         self.draw_cells_from_array(screen, self.cell_array)
 
 
