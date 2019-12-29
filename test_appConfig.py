@@ -1,5 +1,5 @@
 import pytest
-from configuration import AppConfig
+from AppConfig import AppConfig
 
 
 @pytest.fixture
@@ -66,6 +66,9 @@ def test_string_to_boolean_05():
 def test_line_width(app_settings):
     assert app_settings.line_width == 1
 
+
+def test_draw_grid(app_settings):
+    draw_grid = app_settings.draw_grid
 
 
 

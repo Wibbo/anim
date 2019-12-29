@@ -6,43 +6,59 @@ Uses PyGame for graphics rendering.
 
 import sys
 import pygame
-from configuration import AppConfig
-from GridDisplay import GridDisplay
-import numpy as np
-
-
-def get_random_cell_array(rows, cols):
-    """
-    Creates a 2 dimensional numpy array that represents the application grid. Used mainly for testing, must be the
-    same size as the rows and cols defined in the INI file.
-    Each element is set randomly to either zero or 1.
-    :param rows: The number of rows in the array.
-    :param cols:The number of columns in the array.
-    :return: The [row, col] array filled with ones or zeros.
-    """
-    cell_size = (rows, cols)
-    grid_array = np.random.randint(2, size=cell_size)
-
-    return grid_array
-
+from AppConfig import AppConfig
+from GridSurface import GridSurface
 
 done = False
 app_running = False
 
-cfg = AppConfig('GoL.ini')
-gd = GridDisplay(cfg)
+
+def display_help():
+    """
+    Display help for the application.
+    :return: Nothing.
+    """
+    print('Clicking on any cell toggles its active state.')
+    print('A: Create an array from the current status of the grid cells and display it.')
+    print('R: Create a random 2D array representing the grid and set cell statuses accordingly.')
+    print('N: Create a neighbours array for the current grid and display it.')
+
+def read_config_file(ini_file_name):
+    """
+    Reads and validates parameters from the application ini file.
+    :return: A parameters object.
+    """
+    try:
+        params = AppConfig(ini_file_name)
+    except FileNotFoundError as ff:
+        print(ff)
+        sys.exit()
+    except KeyError as ke:
+        print(f'Cannot find {ke} parameter in the ini file, The application cannot continue.')
+        sys.exit()
+    except ValueError as ve:
+        print(ve)
+        sys.exit()
+    except Exception as e:  # noqa
+        print(f'Unexpected error: has occurred, The application cannot continue.')
+        sys.exit()
+    else:
+        return params
+
+
+# Read application parameters and create a grid surface object.
+cfg = read_config_file('GoL.ini')
+gd = GridSurface(cfg)
 
 pygame.init()
 clock = pygame.time.Clock()
+
+start_game_of_life = False
 
 display_window = pygame.display.set_mode((cfg.adjusted_screen_width, cfg.adjusted_screen_height))
 
 if cfg.draw_grid:
     gd.draw_grid(display_window)
-
-if cfg.draw_random_cells:
-    gd.draw_cells_from_array(display_window, get_random_cell_array(cfg.row_count, cfg.column_count))
-
 
 # The main (infinite until interrupted) application loop.
 while not done:
@@ -53,21 +69,42 @@ while not done:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
-
         if event.type == pygame.MOUSEBUTTONDOWN:
-            pass
-
+            # Toggles the active state of the cell that is clicked.
+            cell_row, cell_col = gd.get_cell_from_coordinate(event.pos)
+            if gd.is_cell_active(display_window, cell_row, cell_col):
+                gd.draw_inactive_cell(display_window, cell_col, cell_row)
+            else:
+                gd.draw_active_cell(display_window, cell_col, cell_row)
         if event.type == pygame.KEYDOWN:
             key_pressed = pygame.key.name(event.key).upper()
 
-            if key_pressed == 'F1':
-                app_running = not app_running
-                print(f'App running state is {app_running}')
-            if key_pressed == 'F2':
-                app_running = False
-            if key_pressed == 'F3':
-                pass
+            # React to specified keys.
+            if key_pressed == 'H':
+                display_help()
+            if key_pressed == 'A':
+                print('Creating an array from the cell grid (examining pixel colour')
+                print(gd.get_array_from_cells(display_window))
+            if key_pressed == 'R':
+                print('Drawing cells from a randomly generated array.')
+                cell_array = gd.get_randomly_activated_cell_array()
+                gd.draw_cells_from_array(display_window, cell_array)
+                print(cell_array)
+            if key_pressed == 'N':
+                print('Creating a cell neighbours array.')
+                neigbour_array = gd.get_cell_neighbours_array(display_window)
+                print(neigbour_array)
+            if key_pressed == 'G':
+                start_game_of_life = True
+            if key_pressed == 'S':
+                start_game_of_life = False
             if key_pressed == 'F4':
                 pass
 
+    if start_game_of_life:
+        gd.update_cell_array(display_window)
+
+    # TODO: Look at optimising this by passing a list of rectangles that have changed for certain actions.
     pygame.display.update()
+
+    clock.tick(10)
