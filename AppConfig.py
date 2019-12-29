@@ -62,7 +62,10 @@ class AppConfig:
         self.column_count = int(cfg['GRID']['number_of_columns'])
         self.column_count = AppConfig.validate_setting(self.column_count, 2, 400)
 
-        self.initial_screen_width = int(cfg['GRID']['screen_width'])
+        self.info_bar_width = int(cfg['GRID']['info_bar_width'])
+        self.info_bar_width = AppConfig.validate_setting(self.info_bar_width, 100, 200)
+
+        self.initial_screen_width = int(cfg['GRID']['screen_width']) - self.info_bar_width
         self.initial_screen_width = AppConfig.validate_setting(self.initial_screen_width, 200, 2400)
 
         self.initial_screen_height = int(cfg['GRID']['screen_height'])
@@ -74,7 +77,7 @@ class AppConfig:
         self.cell_width = int(self.initial_screen_width / self.column_count)
         self.cell_height = int(self.initial_screen_height / self.row_count)
 
-        self.adjusted_screen_width = int(self.cell_width * self.column_count) + self.line_width
+        self.adjusted_screen_width = int(self.cell_width * self.column_count) + self.line_width + self.info_bar_width
         self.adjusted_screen_height = int(self.cell_height * self.row_count) + self.line_width
 
         self.grid_colour = json.loads(cfg['COLOUR']['grid_lines'])
