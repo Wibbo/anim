@@ -23,15 +23,14 @@ class GridSurface:
         :return: Nothing
         """
         if self.cfg.draw_grid:
-            # Draw the grid columns in the available screen window.
-            for column in range(0, self.cfg.adjusted_screen_width, self.cfg.cell_width):
-                pygame.draw.line(screen, self.cfg.grid_colour, (column, 0),
-                                 (column, self.cfg.adjusted_screen_height), self.cfg.line_width)
 
-            # Draw the grid rows in the available screen window.
-            for row in range(0, self.cfg.adjusted_screen_height, self.cfg.cell_height):
-                pygame.draw.line(screen, self.cfg.grid_colour, (0, row),
-                                 (self.cfg.adjusted_screen_width, row), self.cfg.line_width)
+            for col in range(0, self.cfg.column_count + 1):
+                pygame.draw.line(screen, self.cfg.grid_colour, (col * self.cfg.cell_width, 0),
+                                 (col * self.cfg.cell_width, self.cfg.grid_height), self.cfg.line_width)
+
+            for row in range(0, self.cfg.row_count + 1):
+                pygame.draw.line(screen, self.cfg.grid_colour, (0, row * self.cfg.cell_height),
+                                 (self.cfg.grid_width, row * self.cfg.cell_height), self.cfg.line_width)
 
     def draw_cell(self, screen, col, row, rgb):
         """

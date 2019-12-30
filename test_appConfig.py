@@ -25,19 +25,19 @@ def test_maximum_column_count(app_settings):
 
 
 def test_minimum_window_width(app_settings):
-    assert app_settings.initial_screen_width >= 200
+    assert app_settings.screen_width_from_ini >= 200
 
 
 def test_maximum_window_width(app_settings):
-    assert app_settings.initial_screen_width <= 2400
+    assert app_settings.screen_width_from_ini <= 2400
 
 
 def test_minimum_window_height(app_settings):
-    assert app_settings.initial_screen_height >= 200
+    assert app_settings.screen_height_from_ini >= 200
 
 
 def test_maximum_window_height(app_settings):
-    assert app_settings.initial_screen_height <= 1024
+    assert app_settings.screen_height_from_ini <= 1024
 
 
 def test_string_to_boolean_01():
