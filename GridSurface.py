@@ -4,7 +4,9 @@ from scipy import signal
 
 
 class GridSurface:
+    """
 
+    """
     def __init__(self, cfg):
         """
         Constructor for the GridSurface class. Receives configuration settings.

@@ -7,13 +7,12 @@ TODO: Consider removing the option to set line width in INI file.
 import configparser
 import json
 
+
 class AppConfig:
 
     @staticmethod
     def string_to_boolean(parameter_value, parameter_name='not supplied'):
-        """
 
-        """
         if parameter_value == 'True':
             return True
         elif parameter_value == 'False':
@@ -63,7 +62,7 @@ class AppConfig:
         self.column_count = AppConfig.validate_setting(self.column_count, 2, 400)
 
         self.info_bar_width = int(cfg['GRID']['info_bar_width'])
-        self.info_bar_width = AppConfig.validate_setting(self.info_bar_width, 100, 200)
+        self.info_bar_width = AppConfig.validate_setting(self.info_bar_width, 0, 300)
 
         self.screen_width_from_ini = int(cfg['GRID']['screen_width'])
         self.screen_width_from_ini = AppConfig.validate_setting(self.screen_width_from_ini, 200, 2400)
@@ -80,8 +79,8 @@ class AppConfig:
         self.cell_width = int(self.grid_width / self.column_count)
         self.cell_height = int(self.grid_height / self.row_count)
 
-        self.window_width = int(self.cell_width * self.column_count) + self.info_bar_width
-        self.window_height = int(self.cell_height * self.row_count)
+        self.window_width = int(self.cell_width * self.column_count) + self.info_bar_width + 1
+        self.window_height = int(self.cell_height * self.row_count) + 1
 
         self.grid_colour = json.loads(cfg['COLOUR']['grid_lines'])
         self.active_cell_colour = json.loads(cfg['COLOUR']['active_cell_colour'])

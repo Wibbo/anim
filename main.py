@@ -5,7 +5,6 @@ Uses PyGame for graphics rendering.
 """
 
 import sys
-import pygame
 import pygame.freetype
 from AppConfig import AppConfig
 from GridSurface import GridSurface
@@ -53,18 +52,15 @@ def read_config_file(ini_file_name):
     else:
         return params
 
+
 pygame.init()
 
 # Read application parameters and create a grid surface object.
 cfg = read_config_file('GoL.ini')
 gd = GridSurface(cfg)
 
-
-sysfont = pygame.font.get_default_font()
-font = pygame.font.SysFont(None, 16)
-
 clock = pygame.time.Clock()
-start_game_of_life = False
+gol_is_running = False
 current_generation = 0
 
 grid_display = pygame.display.set_mode((cfg.window_width, cfg.window_height))
@@ -107,31 +103,21 @@ while not done:
                 neigbour_array = gd.get_cell_neighbours_array(grid_display)
                 print(neigbour_array)
             if key_pressed == 'C':
-                start_game_of_life = False
+                gol_is_running = False
                 gd.clear_grid(grid_display)
             if key_pressed == 'G':
-                start_game_of_life = True
+                gol_is_running = True
                 gd.cell_array = gd.get_array_from_cells(grid_display)
             if key_pressed == 'S':
-                start_game_of_life = False
+                gol_is_running = False
+            if key_pressed == 'I':
+                print('APPLICATION STATUS')
 
-        img = font.render('hello', True, (255, 255, 255))
-        grid_display.blit(img, (20, 20))
-
-
-        #game_font.render_to(grid_display, (40, 350), f'Hello World: {current_generation}', (255, 255, 255))
-
-
-
-
-
-        current_generation += 1
-
-
-    if start_game_of_life:
+    if gol_is_running:
         gd.update_cell_array(grid_display)
+        current_generation += 1
 
     # TODO: Look at optimising this by passing a list of rectangles that have changed for certain actions.
     pygame.display.update()
 
-    clock.tick(60)
+    clock.tick(4)
