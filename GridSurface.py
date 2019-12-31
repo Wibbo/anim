@@ -218,6 +218,23 @@ class GridSurface:
         # Update the grid.
         self.draw_cells_from_array(screen, self.cell_array)
 
+    def get_total_cell_count(self):
+        if self.cell_array is not None:
+            return np.size(self.cell_array)
+        else:
+            return 0
+
+    def get_active_cell_count(self):
+        if self.cell_array is not None:
+            return np.count_nonzero(self.cell_array)
+        else:
+            return 0
+
+    def get_inactive_cell_count(self):
+        if self.cell_array is not None:
+            return self.get_total_cell_count() - np.count_nonzero(self.cell_array)
+        else:
+            return 0
 
 
 

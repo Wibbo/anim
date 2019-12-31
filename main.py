@@ -3,30 +3,14 @@ An application for exploring John Conway's game of life.
 Created by Matthew Weaver, 2019.
 Uses PyGame for graphics rendering.
 """
-
 import sys
 import pygame.freetype
 from AppConfig import AppConfig
 from GridSurface import GridSurface
+import pygame.freetype as ft
 
 done = False
 app_running = False
-
-
-def display_help():
-    """
-    Display help for the application.
-    :return: Nothing.
-    """
-    print()
-    print('APPLICATION OPTIONS')
-    print('===================')
-    print('Clicking on any cell toggles its active state.')
-
-    print('A: Create an array from the current status of the grid cells and display it.')
-    print('C: Clears the grid of all active cells (pauses the game if it is not already paused).')
-    print('R: Create a random 2D array representing the grid and set cell statuses accordingly.')
-    print('N: Create a neighbours array for the current grid and display it.')
 
 
 def read_config_file(ini_file_name):
@@ -53,6 +37,40 @@ def read_config_file(ini_file_name):
         return params
 
 
+def generate_random_display():
+
+    grid_display.fill((0, 0, 0))
+
+    if cfg.draw_grid:
+        gd.draw_grid(grid_display)
+
+    gd.cell_array = gd.get_randomly_activated_cell_array()
+    gd.draw_cells_from_array(grid_display, gd.cell_array)
+
+
+def display_info_text_line(screen, info_text, text_line):
+    x_pos = cfg.grid_width + 6
+    y_pos = 10 + text_line * 16
+
+    font.render_to(screen, (x_pos, y_pos), info_text, (255, 255, 255), (0, 0, 0), size=12)
+
+
+def display_info_text_summary():
+    display_info_text_line(grid_display, f'App is running: {gol_is_running}  ', 3)
+    display_info_text_line(grid_display, f'Current generation: {current_generation}     ', 4)
+
+    display_info_text_line(grid_display, f'Total cell count: {cfg.column_count * cfg.row_count}   ', 6)
+    display_info_text_line(grid_display, f'Live cell count: {gd.get_active_cell_count()}  ', 7)
+    display_info_text_line(grid_display, f'Dead cell count: {gd.get_inactive_cell_count()}  ', 8)
+
+    display_info_text_line(grid_display, f'KEY BINDINGS', 14)
+    display_info_text_line(grid_display, 'R: Randomise the grid', 15)
+    display_info_text_line(grid_display, 'G: Start grid updates', 16)
+    display_info_text_line(grid_display, 'P: Pause grid updates', 17)
+    display_info_text_line(grid_display, 'C: Clear the grid (pause if running)', 17)
+
+
+
 pygame.init()
 
 # Read application parameters and create a grid surface object.
@@ -68,7 +86,12 @@ grid_display = pygame.display.set_mode((cfg.window_width, cfg.window_height))
 if cfg.draw_grid:
     gd.draw_grid(grid_display)
 
+font = ft.Font('fonts/arial.ttf')
+
+
+# ======================================================================================
 # The main (infinite until interrupted) application loop.
+# ======================================================================================
 while not done:
 
     # Handle application interrupts - effectively mouse and keyboard input.
@@ -88,36 +111,30 @@ while not done:
             key_pressed = pygame.key.name(event.key).upper()
 
             # React to specified keys.
-            if key_pressed == 'H':
-                display_help()
             if key_pressed == 'A':
                 print('Creating an array from the cell grid (examining pixel colour')
                 print(gd.get_array_from_cells(grid_display))
             if key_pressed == 'R':
-                print('Drawing cells from a randomly generated array.')
-                cell_array = gd.get_randomly_activated_cell_array()
-                gd.draw_cells_from_array(grid_display, cell_array)
-                print(cell_array)
-            if key_pressed == 'N':
-                print('Creating a cell neighbours array.')
-                neigbour_array = gd.get_cell_neighbours_array(grid_display)
-                print(neigbour_array)
+/+++            generate_random_display()
+                current_generation = 0
             if key_pressed == 'C':
                 gol_is_running = False
                 gd.clear_grid(grid_display)
             if key_pressed == 'G':
                 gol_is_running = True
                 gd.cell_array = gd.get_array_from_cells(grid_display)
-            if key_pressed == 'S':
+            if key_pressed == 'P':
                 gol_is_running = False
-            if key_pressed == 'I':
-                print('APPLICATION STATUS')
 
     if gol_is_running:
         gd.update_cell_array(grid_display)
         current_generation += 1
 
+    display_info_text_summary()
+
     # TODO: Look at optimising this by passing a list of rectangles that have changed for certain actions.
     pygame.display.update()
 
-    clock.tick(4)
+    clock.tick(1)
+
+

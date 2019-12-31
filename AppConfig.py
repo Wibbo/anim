@@ -11,7 +11,7 @@ import json
 class AppConfig:
 
     @staticmethod
-    def string_to_boolean(parameter_value, parameter_name='not supplied'):
+    def string_to_boolean(parameter_value, parameter_name='Invalid entry'):
 
         if parameter_value == 'True':
             return True
@@ -73,11 +73,14 @@ class AppConfig:
         self.line_width = int(cfg['GRID']['line_width'])
         self.line_width = 1  # TODO: Forced to 1, no current use cases require anything else.
 
-        self.grid_width = self.screen_width_from_ini - self.info_bar_width + self.line_width
-        self.grid_height = self.screen_height_from_ini + self.line_width
+        self.grid_width = self.screen_width_from_ini - self.info_bar_width
+        self.grid_height = self.screen_height_from_ini
 
         self.cell_width = int(self.grid_width / self.column_count)
         self.cell_height = int(self.grid_height / self.row_count)
+
+        self.grid_width = int(self.cell_width * self.column_count)
+        self.grid_height = int(self.cell_height * self.row_count)
 
         self.window_width = int(self.cell_width * self.column_count) + self.info_bar_width + 1
         self.window_height = int(self.cell_height * self.row_count) + 1
@@ -91,3 +94,5 @@ class AppConfig:
 
         self.draw_grid = AppConfig.string_to_boolean(self.draw_grid, 'draw_grid')
         self.draw_random_cells = AppConfig.string_to_boolean(self.draw_random_cells, 'draw_random_cells')
+
+        pass
