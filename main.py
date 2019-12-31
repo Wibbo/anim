@@ -2,6 +2,7 @@
 An application for exploring John Conway's game of life.
 Created by Matthew Weaver, 2019.
 Uses PyGame for graphics rendering.
+December 2019.
 """
 import sys
 import pygame.freetype
