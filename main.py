@@ -7,7 +7,7 @@ import sys
 import pygame.freetype
 from AppConfig import AppConfig
 from GridSurface import GridSurface
-import pygame.freetype as ft
+import pygame.freetype as ft  
 
 done = False
 app_running = False
