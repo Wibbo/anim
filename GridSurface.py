@@ -212,6 +212,7 @@ class GridSurface:
                     if self.neighbour_array[row][col] == 2:
                         self.cell_array[row][col] = 1
                 if self.cell_array[row][col] == 0:
+
                     if self.neighbour_array[row][col] == 3:
                         self.cell_array[row][col] = 1
 
@@ -219,18 +220,32 @@ class GridSurface:
         self.draw_cells_from_array(screen, self.cell_array)
 
     def get_total_cell_count(self):
+        """
+        The total number of cells in the currently defined grid.
+        :return: The total cell count (basically equal to grid width * grid height).
+        """
         if self.cell_array is not None:
             return np.size(self.cell_array)
         else:
             return 0
 
     def get_active_cell_count(self):
+        """
+        The total number of active (living) cells in the currently defined grid
+        (the number of cells in the grid that are live).
+        :return:  The total number of active cells.
+        """
         if self.cell_array is not None:
             return np.count_nonzero(self.cell_array)
         else:
             return 0
 
     def get_inactive_cell_count(self):
+        """
+        The total number of inactive (dead) cells in the currently defined grid
+        (the number of cells in the grid that are not live).
+        :return:  The total number of inactive cells.
+        """
         if self.cell_array is not None:
             return self.get_total_cell_count() - np.count_nonzero(self.cell_array)
         else:

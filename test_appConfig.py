@@ -67,9 +67,6 @@ def test_line_width(app_settings):
     assert app_settings.line_width == 1
 
 
-def test_draw_grid(app_settings):
-    draw_grid = app_settings.draw_grid
-
 
 
 

@@ -95,4 +95,8 @@ class AppConfig:
         self.draw_grid = AppConfig.string_to_boolean(self.draw_grid, 'draw_grid')
         self.draw_random_cells = AppConfig.string_to_boolean(self.draw_random_cells, 'draw_random_cells')
 
-        pass
+        self.clock_ticks = int(cfg['TIMING']['ticks_per_second'])
+        self.clock_ticks = AppConfig.validate_setting(self.clock_ticks, 1, 40)
+
+        self.grid_border = int(cfg['GRID']['grid_border'])
+        self.grid_border = AppConfig.validate_setting(self.grid_border, 5, 20)
