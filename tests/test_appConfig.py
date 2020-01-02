@@ -4,7 +4,7 @@ from AppConfig import AppConfig
 
 @pytest.fixture
 def app_settings():
-    cfg = AppConfig('GoL.ini')
+    cfg = AppConfig('./GoL.ini')
     return cfg
 
 
@@ -65,6 +65,7 @@ def test_string_to_boolean_05():
 
 def test_line_width(app_settings):
     assert app_settings.line_width == 1
+
 
 
 
