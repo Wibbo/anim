@@ -6,6 +6,7 @@ TODO: Consider removing the option to set line width in INI file.
 
 import configparser
 import json
+import numpy as np
 
 
 class AppConfig:
@@ -56,7 +57,7 @@ class AppConfig:
         cfg.read(cfg_file)
 
         self.row_count = int(cfg['GRID']['number_of_rows'])
-        self.row_count = AppConfig.validate_setting(self.row_count, 2, 300)
+        self.row_count = AppConfig.validate_setting(self.row_count, 2, 400)
 
         self.column_count = int(cfg['GRID']['number_of_columns'])
         self.column_count = AppConfig.validate_setting(self.column_count, 2, 500)
@@ -100,3 +101,7 @@ class AppConfig:
 
         self.grid_border = int(cfg['GRID']['grid_border'])
         self.grid_border = AppConfig.validate_setting(self.grid_border, 5, 20)
+
+        self.pattern1 = json.loads(cfg['PATTERNS']['aircraft_carrier'])
+        self.pattern1 = np.asarray(self.pattern1, dtype=int)
+

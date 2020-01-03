@@ -14,7 +14,7 @@ class GridSurface:
         """
         self.cfg = cfg
         self.neighbour_array = None
-        self.cell_array = None
+        self.cell_array = np.zeros([self.cfg.row_count, self.cfg.column_count], dtype=int)
 
     def draw_grid(self, screen):
         """
@@ -174,6 +174,17 @@ class GridSurface:
                     cell_array[i][j] = 1
 
         return cell_array
+
+
+    def load_grid_with_pattern(self, pattern, x_pos, y_pos):
+        """
+        Creates a 2D array that represents the current grid.
+        :param screen: A reference to the surface of the application window.
+        :return: An array that represents the current grid state.
+        """
+        self.cell_array[y_pos:y_pos+pattern.shape[0], x_pos:x_pos+pattern.shape[1]] = pattern
+        return self.cell_array
+
 
     def get_cell_neighbours_array(self, screen):
         """

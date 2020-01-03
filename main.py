@@ -2,16 +2,13 @@
 An application for exploring John Conway's game of life.
 Created by Matthew Weaver, 2019.
 Uses PyGame for graphics rendering.
-December 2019.
+December 2019. 
 """
 import sys
 import pygame.freetype
 from AppConfig import AppConfig
 from GridSurface import GridSurface
-import pygame.freetype as ft  
-
-done = False
-app_running = False
+import pygame.freetype as ft
 
 
 def read_config_file(ini_file_name):
@@ -85,7 +82,29 @@ def display_info_text_summary():
     display_info_text_line(grid_display, 'G: Start grid updates', 18)
     display_info_text_line(grid_display, 'P: Pause grid updates', 19)
     display_info_text_line(grid_display, 'C: Clear the grid (pause if running)', 20)
+    display_info_text_line(grid_display, 'S: Save grid as pattern', 21)
 
+
+def toggle_grid_cell(screen, mouse_position):
+    """
+    Toggles the state of the grid cell that was clicked.
+        :param screen: A reference to the surface of the application window.
+    :param mouse_position: The position of the mouse cursor when the mouse was clicked.
+    :return: Nothing.
+    """
+    try:
+        cell_row, cell_col = gd.get_cell_from_coordinate(mouse_position)
+
+        if gd.is_cell_active(screen, cell_row, cell_col):
+            gd.draw_inactive_cell(screen, cell_col, cell_row)
+        else:
+            gd.draw_active_cell(screen, cell_col, cell_row)
+    except ValueError:
+        pass
+
+
+done = False
+app_running = False
 
 pygame.init()
 
@@ -103,6 +122,8 @@ if cfg.draw_grid:
     gd.draw_grid(grid_display)
 
 font = ft.Font('fonts/arial.ttf')
+save_button = pygame.Rect(cfg.grid_width + 12, 500, cfg.info_bar_width - 24, 30)
+pygame.draw.rect(grid_display, (255, 255, 255), save_button, 1)
 
 
 # ======================================================================================
@@ -117,12 +138,11 @@ while not done:
             pygame.quit()
             sys.exit()
         if event.type == pygame.MOUSEBUTTONDOWN:
-            # Toggles the active state of the cell that is clicked.
-            cell_row, cell_col = gd.get_cell_from_coordinate(event.pos)
-            if gd.is_cell_active(grid_display, cell_row, cell_col):
-                gd.draw_inactive_cell(grid_display, cell_col, cell_row)
+            if save_button.collidepoint(event.pos):
+                print('Button pressed.')
             else:
-                gd.draw_active_cell(grid_display, cell_col, cell_row)
+                # Toggles the active state of the cell that is clicked.
+                toggle_grid_cell(grid_display, event.pos)
         if event.type == pygame.KEYDOWN:
             key_pressed = pygame.key.name(event.key).upper()
 
