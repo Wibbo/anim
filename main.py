@@ -17,7 +17,7 @@ def read_config_file(ini_file_name):
     :param ini_file_name: The name of the ini file to read.
     :return: An object that represents the configuration parameters.
     """
-    try:
+    try:  # Changed something.
         params = AppConfig(ini_file_name)
     except FileNotFoundError as ff:
         print(ff)
