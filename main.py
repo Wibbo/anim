@@ -82,7 +82,6 @@ def display_info_text_summary():
     display_info_text_line(grid_display, 'G: Start grid updates', 18)
     display_info_text_line(grid_display, 'P: Pause grid updates', 19)
     display_info_text_line(grid_display, 'C: Clear the grid (pause if running)', 20)
-    display_info_text_line(grid_display, 'S: Save grid as pattern', 21)
 
 
 def toggle_grid_cell(screen, mouse_position):
@@ -122,8 +121,6 @@ if cfg.draw_grid:
     gd.draw_grid(grid_display)
 
 font = ft.Font('fonts/arial.ttf')
-save_button = pygame.Rect(cfg.grid_width + 12, 500, cfg.info_bar_width - 24, 30)
-pygame.draw.rect(grid_display, (255, 255, 255), save_button, 1)
 
 
 # ======================================================================================
@@ -138,11 +135,8 @@ while not done:
             pygame.quit()
             sys.exit()
         if event.type == pygame.MOUSEBUTTONDOWN:
-            if save_button.collidepoint(event.pos):
-                print('Button pressed.')
-            else:
-                # Toggles the active state of the cell that is clicked.
-                toggle_grid_cell(grid_display, event.pos)
+            # Toggles the active state of the cell that is clicked.
+            toggle_grid_cell(grid_display, event.pos)
         if event.type == pygame.KEYDOWN:
             key_pressed = pygame.key.name(event.key).upper()
 
@@ -164,8 +158,6 @@ while not done:
         current_generation += 1
 
     display_info_text_summary()
-
-    # TODO: Look at optimising this by passing a list of rectangles that have changed for certain actions.
     pygame.display.update()
 
     clock.tick(cfg.clock_ticks)
