@@ -45,9 +45,8 @@ def generate_random_display():
     if cfg.draw_grid:
         gd.draw_grid(grid_display)
 
-    gd.cell_array = gd.get_randomly_activated_cell_array()
+    gd.create_random_grid()
     gd.draw_cells_from_array(grid_display, gd.cell_array)
-
 
 def display_info_text_line(screen, info_text, text_line):
     """
@@ -149,7 +148,7 @@ while not done:
                 gd.clear_grid(grid_display)
             if key_pressed == 'G':
                 gol_is_running = True
-                gd.cell_array = gd.get_array_from_cells(grid_display)
+                # gd.cell_array = gd.get_array_from_cells(grid_display)
             if key_pressed == 'P':
                 gol_is_running = False
 

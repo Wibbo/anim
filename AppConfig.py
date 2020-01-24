@@ -74,6 +74,9 @@ class AppConfig:
         self.six_neighbour_resurrection = cfg['ACTIONS']['six_neighbour_resurrection']
         self.six_neighbour_resurrection = AppConfig.string_to_boolean(self.six_neighbour_resurrection, '6 neighbours')
 
+        self.show_cell_counts = cfg['ACTIONS']['show_cell_counts']
+        self.show_cell_counts = AppConfig.string_to_boolean(self.show_cell_counts, 'cell counts')
+
         self.screen_height_from_ini = int(cfg['GRID']['screen_height'])
         self.screen_height_from_ini = AppConfig.validate_setting(self.screen_height_from_ini, 200, 1024)
 
