@@ -71,6 +71,9 @@ class AppConfig:
         self.screen_width_from_ini = int(cfg['GRID']['screen_width'])
         self.screen_width_from_ini = AppConfig.validate_setting(self.screen_width_from_ini, 200, 2400)
 
+        self.six_neighbour_resurrection = cfg['ACTIONS']['six_neighbour_resurrection']
+        self.six_neighbour_resurrection = AppConfig.string_to_boolean(self.six_neighbour_resurrection, '6 neighbours')
+
         self.screen_height_from_ini = int(cfg['GRID']['screen_height'])
         self.screen_height_from_ini = AppConfig.validate_setting(self.screen_height_from_ini, 200, 1024)
 

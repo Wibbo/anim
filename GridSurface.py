@@ -13,6 +13,7 @@ class GridSurface:
         self.cfg = cfg
         self.neighbour_array = None
         self.cell_array = np.zeros([self.cfg.row_count, self.cfg.column_count], dtype=int)
+        self.count_array = np.zeros([self.cfg.row_count, self.cfg.column_count], dtype=int)
 
     def draw_grid(self, screen):
         """
@@ -223,8 +224,9 @@ class GridSurface:
                 if self.cell_array[row][col] == 0:
                     if self.neighbour_array[row][col] == 3:
                         self.cell_array[row][col] = 1
-                    #if self.neighbour_array[row][col] == 6:
-                     #   self.cell_array[row][col] = 1
+                    if self.cfg.six_neighbour_resurrection:
+                        if self.neighbour_array[row][col] == 6:
+                            self.cell_array[row][col] = 1
 
         # Update the grid.
         self.draw_cells_from_array(screen, self.cell_array)
