@@ -4,9 +4,7 @@ from scipy import signal
 
 
 class GridSurface:
-    """
 
-    """
     def __init__(self, cfg):
         """
         Constructor for the GridSurface class. Receives configuration settings.
@@ -175,16 +173,16 @@ class GridSurface:
 
         return cell_array
 
-
     def load_grid_with_pattern(self, pattern, x_pos, y_pos):
         """
         Creates a 2D array that represents the current grid.
-        :param screen: A reference to the surface of the application window.
+        :param pattern: A reference to a pattern array.
+        :param x_pos: x coordinate for the top left pattern element.
+        :param y_pos: y coordinate for the top left pattern element.
         :return: An array that represents the current grid state.
         """
         self.cell_array[y_pos:y_pos+pattern.shape[0], x_pos:x_pos+pattern.shape[1]] = pattern
         return self.cell_array
-
 
     def get_cell_neighbours_array(self, screen):
         """
@@ -197,7 +195,7 @@ class GridSurface:
 
         neighbour_mask = np.ones((3, 3), dtype=int)
         neighbour_mask[1, 1] = 0
-        self.neighbour_array = signal.convolve2d(self.cell_array, neighbour_mask, mode="same")
+        self.neighbour_array = signal.convolve2d(self.cell_array, neighbour_mask, mode="same", boundary='wrap')
 
         return self.neighbour_array
 
@@ -223,9 +221,10 @@ class GridSurface:
                     if self.neighbour_array[row][col] == 2:
                         self.cell_array[row][col] = 1
                 if self.cell_array[row][col] == 0:
-
                     if self.neighbour_array[row][col] == 3:
                         self.cell_array[row][col] = 1
+                    #if self.neighbour_array[row][col] == 6:
+                     #   self.cell_array[row][col] = 1
 
         # Update the grid.
         self.draw_cells_from_array(screen, self.cell_array)
