@@ -25,6 +25,9 @@ class AppConfig:
 
     @staticmethod
     def validate_setting(value, min_val, max_val):
+        if min_val > max_val:
+            raise KeyError
+
         if value < min_val:
             value = min_val
         elif value > max_val:
