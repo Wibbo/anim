@@ -2,7 +2,7 @@
 An application for exploring John Conway's game of life.
 Created by Matthew Weaver, 2019.
 Uses PyGame for graphics rendering.
-December 2019. 
+December 2019.
 """
 import sys
 import pygame.freetype
@@ -47,6 +47,7 @@ def generate_random_display():
 
     gd.create_random_grid()
     gd.draw_cells_from_array(grid_display, gd.cell_array)
+
 
 def display_info_text_line(screen, info_text, text_line):
     """
@@ -148,7 +149,7 @@ while not done:
                 gd.clear_grid(grid_display)
             if key_pressed == 'G':
                 gol_is_running = True
-                # gd.cell_array = gd.get_array_from_cells(grid_display)
+                gd.cell_array = gd.get_array_from_cells(grid_display)
             if key_pressed == 'P':
                 gol_is_running = False
 

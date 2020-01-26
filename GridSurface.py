@@ -16,7 +16,7 @@ class GridSurface:
         self.count_array = np.zeros([self.cfg.row_count, self.cfg.column_count], dtype=int)
 
     def get_colour_from_count(self, row, col):
-        col = self.count_array[row][col]
+        col = self.count_array[row][col] * 3
 
         if col > 255:
             return [255, 255, 255]
@@ -79,7 +79,7 @@ class GridSurface:
         :param col: The column at which to position the rectangle. (starts at 0).
         :return: Nothing
         """
-        # self.draw_cell(screen, col, row, self.cfg.active_cell_colour)
+        self.draw_cell(screen, col, row, self.cfg.active_cell_colour)
 
     def draw_inactive_cell(self, screen, col, row):
         """
@@ -167,7 +167,7 @@ class GridSurface:
         # TODO remove or configure this testing pixel.
         # screen.set_at((xcoord, ycoord), (255, 0, 0))
 
-        if rgb_colour[0] * rgb_colour[1] * rgb_colour[2] == 0:
+        if rgb_colour[0] == 0 and rgb_colour[1] == 0 * rgb_colour[2] == 0:
             return False
         else:
             return True
