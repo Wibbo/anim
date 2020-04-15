@@ -16,6 +16,12 @@ class GridSurface:
         self.count_array = np.zeros([self.cfg.row_count, self.cfg.column_count], dtype=int)
 
     def get_colour_from_count(self, row, col):
+        """
+        Changes the RGB value of a cell colour depending on how many times it has been visited.
+        :param row: The row number for the cell being processed.
+        :param col: The column number for the cell being processed.
+        :return: An RGB value for the cell being processed.
+        """
         col = self.count_array[row][col] * 3
 
         if col > 255:
@@ -129,7 +135,11 @@ class GridSurface:
         :return: The [row, col] array filled with ones or zeros.
         """
         cell_size = (self.cfg.row_count, self.cfg.column_count)
-        self.cell_array = np.random.randint(2, size=cell_size)
+
+        live_cells = self.cfg.live_cell_percentage/100
+        dead_cells = self.cfg.dead_cell_percentage/100
+
+        self.cell_array = np.random.choice([0, 1], size=cell_size, p=[dead_cells, live_cells])
         self.count_array = np.copy(self.cell_array)
 
     def get_cell_from_coordinate(self, pos):
@@ -235,6 +245,43 @@ class GridSurface:
         # Loop through the entire grid and update each cell.
         for row in range(0, self.cfg.row_count):
             for col in range(0, self.cfg.column_count):
+
+                if self.cell_array[row][col] == 1:
+                    if self.neighbour_array[row][col] < 1 or self.neighbour_array[row][col] >5:
+                        self.cell_array[row][col] = 0
+                    else:
+                        self.cell_array[row][col] = 1
+
+                """
+                if self.cell_array[row][col] == 1:
+                    if self.neighbour_array[row][col] < 2:
+                        self.cell_array[row][col] = 0
+                    if self.neighbour_array[row][col] >= 4:
+                        self.cell_array[row][col] = 0
+                    if self.neighbour_array[row][col] == 3:
+                        self.cell_array[row][col] = 1
+                    if self.neighbour_array[row][col] == 2:
+                        self.cell_array[row][col] = 1
+                
+                """
+
+
+                if self.cell_array[row][col] == 0:
+                    if self.neighbour_array[row][col] == 3:
+                        self.cell_array[row][col] = 1
+                    if self.cfg.six_neighbour_resurrection:
+                        if self.neighbour_array[row][col] == 6:
+                            self.cell_array[row][col] = 1
+
+                if self.cell_array[row][col] == 1:
+                    self.count_array[row][col] += 1
+
+        # Update the grid.
+        self.draw_cells_from_array(screen, self.cell_array)
+
+    def standard_rules(self):
+        for row in range(0, self.cfg.row_count):
+            for col in range(0, self.cfg.column_count):
                 if self.cell_array[row][col] == 1:
                     if self.neighbour_array[row][col] < 2:
                         self.cell_array[row][col] = 0
@@ -251,11 +298,7 @@ class GridSurface:
                         if self.neighbour_array[row][col] == 6:
                             self.cell_array[row][col] = 1
 
-                if self.cell_array[row][col] == 1:
-                    self.count_array[row][col] += 1
 
-        # Update the grid.
-        self.draw_cells_from_array(screen, self.cell_array)
 
     def get_total_cell_count(self):
         """

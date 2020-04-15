@@ -80,6 +80,10 @@ class AppConfig:
         self.screen_height_from_ini = int(cfg['GRID']['screen_height'])
         self.screen_height_from_ini = AppConfig.validate_setting(self.screen_height_from_ini, 200, 1024)
 
+        self.live_cell_percentage = int(cfg['GRID']['live_cell_percentage'])
+        self.live_cell_percentage = AppConfig.validate_setting(self.live_cell_percentage, 0, 100)
+        self.dead_cell_percentage = 100. - self.live_cell_percentage
+
         self.line_width = int(cfg['GRID']['line_width'])
         self.line_width = 1  # TODO: Forced to 1, no current use cases require anything else.
 
