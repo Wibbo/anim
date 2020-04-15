@@ -11,6 +11,11 @@ This is the entry point for the application. The key goals of this file are:
 * Reacts to application key presses as defined in the **Application keys** section of this readme.  
 * Contains the main PyGame loop that repeats until the application is stopped.  
 
+#### AppConfig.py
+Creates an in-memory structure for the application configuration file.
+
+#### GridSurface.py
+Represents the application grid, provides primitive drawing capabilities and game of life logic.
 
 ## Application keys  
 * R = Generate random grid of live and dead cells.  
