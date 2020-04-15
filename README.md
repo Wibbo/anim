@@ -8,7 +8,7 @@ Python implementation of John Conway's game of life using PyGame as a UI engine.
 This is the entry point for the application. The key goals of this file are:  
 * Read configuration values from the GoL.ini file.  
 * Run the application, draw the application grid and update the status text in the sidebar.  
-* Reacts to application key presses as defined in the Application keys section of this readme.  
+* Reacts to application key presses as defined in the **Application keys** section of this readme.  
 * Contains the main PyGame loop that repeats until the application is stopped.  
 
 
