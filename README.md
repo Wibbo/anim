@@ -32,6 +32,7 @@ screen_height = The height of the screen in pixels.
 line_width = The width of the grid lines in pixels (currently forced to 1).  
 draw_grid = If set to True, a grid is drawn. If set to False, no grid is drawn.  
 info_bar_width = The width, in pixels, of the info bar on the right hand side of the application.  
+live_cell_percentage = When randomising the grid, this is the percentage of living cells compared to dead cells.  
 
 #### [COLOUR]  
 grid_lines = RGB colour of the grid lines e.g. [64, 64, 64]  
