@@ -78,6 +78,9 @@ class AppConfig:
         self.screen_height_from_ini = int(cfg['GRID']['screen_height'])
         self.screen_height_from_ini = AppConfig.validate_setting(self.screen_height_from_ini, 200, 1024)
 
+        self.cell_reproduction_rule = int(cfg['ACTIONS']['cell_reproduction_rule'])
+        self.cell_reproduction_rule = AppConfig.validate_setting(self.cell_reproduction_rule, 1, 3)
+
         self.live_cell_percentage = int(cfg['GRID']['live_cell_percentage'])
         self.live_cell_percentage = AppConfig.validate_setting(self.live_cell_percentage, 0, 100)
         self.dead_cell_percentage = 100. - self.live_cell_percentage

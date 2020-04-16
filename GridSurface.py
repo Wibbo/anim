@@ -234,7 +234,7 @@ class GridSurface:
         rules = GameRules(self.cfg.row_count, self.cfg.column_count,
                           self.cell_array, self.neighbour_array, self.count_array)
 
-        rules.rule_selector(3)
+        rules.rule_selector(self.cfg.cell_reproduction_rule)
 
         # Update the grid.
         self.draw_cells_from_array(screen, self.cell_array)
