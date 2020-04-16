@@ -1,7 +1,5 @@
 """
 Reads details from the application configuration file and presents them appropriately as application parameters.
-TODO: The line width parameter is currently forced to 1 since there is currently no need to consider other widths.
-TODO: Consider removing the option to set line width in INI file.
 """
 
 import configparser
@@ -83,9 +81,6 @@ class AppConfig:
         self.live_cell_percentage = int(cfg['GRID']['live_cell_percentage'])
         self.live_cell_percentage = AppConfig.validate_setting(self.live_cell_percentage, 0, 100)
         self.dead_cell_percentage = 100. - self.live_cell_percentage
-
-        self.line_width = int(cfg['GRID']['line_width'])
-        self.line_width = 1  # TODO: Forced to 1, no current use cases require anything else.
 
         self.grid_width = self.screen_width_from_ini - self.info_bar_width
         self.grid_height = self.screen_height_from_ini

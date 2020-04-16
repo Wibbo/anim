@@ -1,6 +1,7 @@
 import pygame
 import numpy as np
 from scipy import signal
+from GameRules import GameRules
 
 
 class GridSurface:
@@ -44,11 +45,11 @@ class GridSurface:
 
             for col in range(0, self.cfg.column_count + 1):
                 pygame.draw.line(screen, self.cfg.grid_colour, (col * self.cfg.cell_width, 0),
-                                 (col * self.cfg.cell_width, self.cfg.grid_height), self.cfg.line_width)
+                                 (col * self.cfg.cell_width, self.cfg.grid_height), 1)
 
             for row in range(0, self.cfg.row_count + 1):
                 pygame.draw.line(screen, self.cfg.grid_colour, (0, row * self.cfg.cell_height),
-                                 (self.cfg.grid_width, row * self.cfg.cell_height), self.cfg.line_width)
+                                 (self.cfg.grid_width, row * self.cfg.cell_height), 1)
 
     def draw_cell(self, screen, col, row, rgb):
         """
@@ -59,8 +60,8 @@ class GridSurface:
         :param rgb: The rbg value for the colour of the rectangle being drawn.
         :return: Nothing.
         """
-        left = col * self.cfg.cell_width + self.cfg.line_width
-        top = row * self.cfg.cell_height + self.cfg.line_width
+        left = col * self.cfg.cell_width + 1
+        top = row * self.cfg.cell_height + 1
         width = self.cfg.cell_width - 1
         height = self.cfg.cell_height - 1
 
@@ -208,21 +209,9 @@ class GridSurface:
 
         return cell_array
 
-    def load_grid_with_pattern(self, pattern, x_pos, y_pos):
-        """
-        Creates a 2D array that represents the current grid.
-        :param pattern: A reference to a pattern array.
-        :param x_pos: x coordinate for the top left pattern element.
-        :param y_pos: y coordinate for the top left pattern element.
-        :return: An array that represents the current grid state.
-        """
-        self.cell_array[y_pos:y_pos+pattern.shape[0], x_pos:x_pos+pattern.shape[1]] = pattern
-        return self.cell_array
-
-    def get_cell_neighbours_array(self, screen):
+    def get_cell_neighbours_array(self):
         """
         Gets an array of neighbours from the existing grid.
-        :param screen: A reference to the surface of the application window.
         :return: A 2D array representing neighbouring cell counts.
         """
         self.neighbour_array = self.cell_array.copy()
@@ -240,65 +229,15 @@ class GridSurface:
         :param screen: A reference to the surface of the application window.
         :return: Nothing.
         """
-        self.neighbour_array = self.get_cell_neighbours_array(screen)
+        self.neighbour_array = self.get_cell_neighbours_array()
 
-        # Loop through the entire grid and update each cell.
-        for row in range(0, self.cfg.row_count):
-            for col in range(0, self.cfg.column_count):
+        rules = GameRules(self.cfg.row_count, self.cfg.column_count,
+                          self.cell_array, self.neighbour_array, self.count_array)
 
-                if self.cell_array[row][col] == 1:
-                    if self.neighbour_array[row][col] < 1 or self.neighbour_array[row][col] >5:
-                        self.cell_array[row][col] = 0
-                    else:
-                        self.cell_array[row][col] = 1
-
-                """
-                if self.cell_array[row][col] == 1:
-                    if self.neighbour_array[row][col] < 2:
-                        self.cell_array[row][col] = 0
-                    if self.neighbour_array[row][col] >= 4:
-                        self.cell_array[row][col] = 0
-                    if self.neighbour_array[row][col] == 3:
-                        self.cell_array[row][col] = 1
-                    if self.neighbour_array[row][col] == 2:
-                        self.cell_array[row][col] = 1
-                
-                """
-
-
-                if self.cell_array[row][col] == 0:
-                    if self.neighbour_array[row][col] == 3:
-                        self.cell_array[row][col] = 1
-                    if self.cfg.six_neighbour_resurrection:
-                        if self.neighbour_array[row][col] == 6:
-                            self.cell_array[row][col] = 1
-
-                if self.cell_array[row][col] == 1:
-                    self.count_array[row][col] += 1
+        rules.rule_selector(3)
 
         # Update the grid.
         self.draw_cells_from_array(screen, self.cell_array)
-
-    def standard_rules(self):
-        for row in range(0, self.cfg.row_count):
-            for col in range(0, self.cfg.column_count):
-                if self.cell_array[row][col] == 1:
-                    if self.neighbour_array[row][col] < 2:
-                        self.cell_array[row][col] = 0
-                    if self.neighbour_array[row][col] >= 4:
-                        self.cell_array[row][col] = 0
-                    if self.neighbour_array[row][col] == 3:
-                        self.cell_array[row][col] = 1
-                    if self.neighbour_array[row][col] == 2:
-                        self.cell_array[row][col] = 1
-                if self.cell_array[row][col] == 0:
-                    if self.neighbour_array[row][col] == 3:
-                        self.cell_array[row][col] = 1
-                    if self.cfg.six_neighbour_resurrection:
-                        if self.neighbour_array[row][col] == 6:
-                            self.cell_array[row][col] = 1
-
-
 
     def get_total_cell_count(self):
         """
@@ -331,8 +270,3 @@ class GridSurface:
             return self.get_total_cell_count() - np.count_nonzero(self.cell_array)
         else:
             return 0
-
-
-
-
-
