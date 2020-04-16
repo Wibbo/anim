@@ -17,6 +17,13 @@ Creates an in-memory structure for the application configuration file.
 #### GridSurface.py
 Represents the application grid, provides primitive drawing capabilities and game of life logic.
 
+#### GameRules.py
+* Defines rule-sets that govern how cells reproduce.
+* There is a function called rule_x for each set of rules that are defined.
+* More rules can be introduced by creating a new rule_x function. 
+* The current rule-set is defined in the application configuration file.
+* The rule_selector function activates a rule-set based on the rule number that is supplied.
+
 ## Application keys  
 * R = Generate random grid of live and dead cells.  
 * C = Clear the grid & stop the grid from updating if it is currently running.  
@@ -45,4 +52,4 @@ ticks_per_second = The number of times the screen is updated each second.
 #### [ACTIONS] 
 six_neighbour_resurrection = If True, then any dead cell that has exactly six neighbouring cells is resurrected.  
 show_cell_counts = If True, cell colours change from a dim red to white according to how many times they are resurrected. If False, live cells are always set to the active_cell_colour. 
-
+cell_reproduction_rule = A number that represents the rule-set to be applied to cell reproduction. 
