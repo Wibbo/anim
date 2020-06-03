@@ -39,20 +39,18 @@ class GameRules:
         for row in range(0, self.rows):
             for col in range(0, self.cols):
                 # Process the living cells.
-                if self.cell_array[row][col] == 1:
-                    if self.neighbour_array[row][col] < 2:
-                        self.cell_array[row][col] = 0
-                    if self.neighbour_array[row][col] >= 4:
-                        self.cell_array[row][col] = 0
+                if self.cell_array[row][col] == 1:                  
                     if self.neighbour_array[row][col] == 3:
                         self.cell_array[row][col] = 1
-                    if self.neighbour_array[row][col] == 2:
+                    elif self.neighbour_array[row][col] == 2:
                         self.cell_array[row][col] = 1
+                    else:
+                         self.cell_array[row][col] = 0                        
                 # Process the dead cells.
                 if self.cell_array[row][col] == 0:
                     if self.neighbour_array[row][col] == 3:
                         self.cell_array[row][col] = 1
-
+                
                 if self.cell_array[row][col] == 1:
                     self.count_array[row][col] += 1
 
@@ -65,22 +63,20 @@ class GameRules:
         for row in range(0, self.rows):
             for col in range(0, self.cols):
                 # Process the living cells.
-                if self.cell_array[row][col] == 1:
-                    if self.neighbour_array[row][col] < 2:
-                        self.cell_array[row][col] = 0
-                    if self.neighbour_array[row][col] >= 4:
-                        self.cell_array[row][col] = 0
+                if self.cell_array[row][col] == 1:                  
                     if self.neighbour_array[row][col] == 3:
                         self.cell_array[row][col] = 1
-                    if self.neighbour_array[row][col] == 2:
+                    elif self.neighbour_array[row][col] == 2:
                         self.cell_array[row][col] = 1
+                    else:
+                            self.cell_array[row][col] = 0                        
                 # Process the dead cells.
                 if self.cell_array[row][col] == 0:
                     if self.neighbour_array[row][col] == 3 or self.neighbour_array[row][col] == 6:
                         self.cell_array[row][col] = 1
 
                 if self.cell_array[row][col] == 1:
-                    self.count_array[row][col] += 1
+                    self.count_array[row][col] += 1     
 
     def rule_3(self):
         """

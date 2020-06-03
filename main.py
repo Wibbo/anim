@@ -1,3 +1,4 @@
+
 """
 An application for exploring John Conway's game of life.
 Created by Matthew Weaver, 2019.
