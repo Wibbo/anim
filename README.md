@@ -29,6 +29,7 @@ Represents the application grid, provides primitive drawing capabilities and gam
 * C = Clear the grid & stop the grid from updating if it is currently running.  
 * G = Start grid update.  
 * P = Pause grid updates.  
+While the grid is paused, you can click any cell in the grid to toggle its on/off status.
 
 ## ini file settings  
 #### [GRID]  
