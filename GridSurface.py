@@ -45,7 +45,7 @@ class GridSurface:
 
             for col in range(0, self.cfg.column_count + 1):
                 pygame.draw.line(screen, self.cfg.grid_colour, (col * self.cfg.cell_width, 0),
-                                 (col * self.cfg.cell_width, self.cfg.grid_height), 1)
+                                 (col * self.cfg.cell_width, self.cfg.grid_height))
 
             for row in range(0, self.cfg.row_count + 1):
                 pygame.draw.line(screen, self.cfg.grid_colour, (0, row * self.cfg.cell_height),
@@ -88,6 +88,16 @@ class GridSurface:
         """
         self.draw_cell(screen, col, row, self.cfg.active_cell_colour)
 
+    def draw_black_cell(self, screen, col, row):
+        """
+        Draws a cell using the inactive cell colour defined in the INI file.
+        :param screen: A reference to the surface of the application window.
+        :param row: The row at which to position the rectangle (starts at 0).
+        :param col: The column at which to position the rectangle. (starts at 0).
+        :return: Nothing
+        """
+        self.draw_cell(screen, col, row, [0, 0, 0])
+
     def draw_inactive_cell(self, screen, col, row):
         """
         Draws a cell using the inactive cell colour defined in the INI file.
@@ -119,10 +129,7 @@ class GridSurface:
         for i in range(number_of_rows):
             for j in range(number_of_columns):
                 if grid_array[i][j] == 1:
-                    if self.cfg.show_cell_counts:
-                        self.draw_custom_cell(screen, j, i)
-                    else:
-                        self.draw_active_cell(screen, j, i)
+                    self.draw_active_cell(screen, j, i)
                 elif grid_array[i][j] == 0:
                     self.draw_inactive_cell(screen, j, i)
                 else:

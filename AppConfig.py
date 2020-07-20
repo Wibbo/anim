@@ -69,9 +69,6 @@ class AppConfig:
         self.screen_width_from_ini = int(cfg['GRID']['screen_width'])
         self.screen_width_from_ini = AppConfig.validate_setting(self.screen_width_from_ini, 200, 2400)
 
-        self.show_cell_counts = cfg['ACTIONS']['show_cell_counts']
-        self.show_cell_counts = AppConfig.string_to_boolean(self.show_cell_counts, 'cell counts')
-
         self.screen_height_from_ini = int(cfg['GRID']['screen_height'])
         self.screen_height_from_ini = AppConfig.validate_setting(self.screen_height_from_ini, 200, 1024)
 
@@ -97,6 +94,7 @@ class AppConfig:
         self.grid_colour = json.loads(cfg['COLOUR']['grid_lines'])
         self.active_cell_colour = json.loads(cfg['COLOUR']['active_cell_colour'])
         self.inactive_cell_colour = json.loads(cfg['COLOUR']['inactive_cell_colour'])
+        self.visited_cell_colour = json.loads(cfg['COLOUR']['visited_cell_colour'])
 
         self.draw_grid = cfg['GRID']['draw_grid']
 
