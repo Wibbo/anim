@@ -29,6 +29,7 @@ Represents the application grid, provides primitive drawing capabilities and gam
 * C = Clear the grid & stop the grid from updating if it is currently running.  
 * G = Start grid update.  
 * P = Pause grid updates.  
+
 While the grid is paused, you can click any cell in the grid to toggle its on/off status.
 
 ## ini file settings  
@@ -51,6 +52,5 @@ inactive_cell_colour = RGB colour for inactive cells e.g. [0, 0, 0]
 ticks_per_second = The number of times the screen is updated each second.
 
 #### [ACTIONS] 
-six_neighbour_resurrection = If True, then any dead cell that has exactly six neighbouring cells is resurrected.  
 show_cell_counts = If True, cell colours change from a dim red to white according to how many times they are resurrected. If False, live cells are always set to the active_cell_colour. 
-cell_reproduction_rule = A number that represents the rule-set to be applied to cell reproduction. 
+cell_reproduction_rule = A number that represents the rule-set to be applied to cell reproduction. Rules are defined in GameRules.py.
