@@ -53,4 +53,5 @@ ticks_per_second = The number of times the screen is updated each second.
 
 #### [ACTIONS] 
 show_cell_counts = If True, cell colours change from a dim red to white according to how many times they are resurrected. If False, live cells are always set to the active_cell_colour.
+
 cell_reproduction_rule = A number that represents the rule-set to be applied to cell reproduction. Rules are defined in GameRules.py.
