@@ -60,11 +60,10 @@ class AppConfig:
         self.row_count = int(cfg['GRID']['number_of_rows'])
         self.row_count = AppConfig.validate_setting(self.row_count, 2, 400)
 
-        self.column_count = int(cfg['GRID']['number_of_columns'])
-        self.column_count = AppConfig.validate_setting(self.column_count, 2, 500)
+        self.col_count = int(cfg['GRID']['number_of_columns'])
+        self.col_count = AppConfig.validate_setting(self.col_count, 2, 500)
 
-        self.info_bar_width = int(cfg['GRID']['info_bar_width'])
-        self.info_bar_width = AppConfig.validate_setting(self.info_bar_width, 0, 300)
+        self.title = cfg['GRID']['title']
 
         self.screen_width_from_ini = int(cfg['GRID']['screen_width'])
         self.screen_width_from_ini = AppConfig.validate_setting(self.screen_width_from_ini, 200, 2400)
@@ -72,32 +71,14 @@ class AppConfig:
         self.screen_height_from_ini = int(cfg['GRID']['screen_height'])
         self.screen_height_from_ini = AppConfig.validate_setting(self.screen_height_from_ini, 200, 1024)
 
-        self.cell_reproduction_rule = int(cfg['ACTIONS']['cell_reproduction_rule'])
-        self.cell_reproduction_rule = AppConfig.validate_setting(self.cell_reproduction_rule, 1, 3)
-
-        self.live_cell_percentage = int(cfg['GRID']['live_cell_percentage'])
-        self.live_cell_percentage = AppConfig.validate_setting(self.live_cell_percentage, 0, 100)
-        self.dead_cell_percentage = 100. - self.live_cell_percentage
-
-        self.grid_width = self.screen_width_from_ini - self.info_bar_width
-        self.grid_height = self.screen_height_from_ini
-
-        self.cell_width = int(self.grid_width / self.column_count)
-        self.cell_height = int(self.grid_height / self.row_count)
-
-        self.grid_width = int(self.cell_width * self.column_count)
-        self.grid_height = int(self.cell_height * self.row_count)
-
-        self.window_width = int(self.cell_width * self.column_count) + self.info_bar_width + 1
-        self.window_height = int(self.cell_height * self.row_count) + 1
+        self.grid_thickness = int(cfg['GRID']['grid_thickness'])
+        self.grid_thickness = AppConfig.validate_setting(self.grid_thickness, 1, 3)       
 
         self.grid_colour = json.loads(cfg['COLOUR']['grid_lines'])
         self.active_cell_colour = json.loads(cfg['COLOUR']['active_cell_colour'])
         self.inactive_cell_colour = json.loads(cfg['COLOUR']['inactive_cell_colour'])
-        self.visited_cell_colour = json.loads(cfg['COLOUR']['visited_cell_colour'])
 
         self.draw_grid = cfg['GRID']['draw_grid']
-
         self.draw_grid = AppConfig.string_to_boolean(self.draw_grid, 'draw_grid')
 
         self.clock_ticks = int(cfg['TIMING']['ticks_per_second'])
