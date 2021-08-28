@@ -89,7 +89,7 @@ wall_list = []
 done = False
 app_running = False
 
-create_actors(10, actor_list)
+create_actors(4, actor_list)
 pygame.init()
 
 

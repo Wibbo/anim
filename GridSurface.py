@@ -53,13 +53,13 @@ class GridSurface:
 
     def update_actors(self, screen, actors: WalkingActor):
         for actor in actors:
-            actor.straight_line_walk()
+            actor.update()
         for actor in actors:           
             self.draw_actor(actor, screen)
 
 
     def update_actor(self, screen, actor: WalkingActor):
-            actor.straight_line_walk()     
+            actor.update()     
             self.draw_actor(actor, screen)
 
 

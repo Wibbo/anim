@@ -25,7 +25,7 @@ class WalkingActor:
         self.row = row
         self.cfg = cfg
         self.state_changed = True
-        self.speed = 12
+        self.speed = 6
         self.angle = random.randint(0, 359)
 
         if self.angle == 0 or self.angle == 90 or self.angle == 270:
@@ -36,63 +36,6 @@ class WalkingActor:
 
         self.angle = float(math.radians(self.angle))
         a=2
-
-    def random_update(self):
-        if not self.actorType == ActorType.WALL:
-            self.previous_col = self.col
-            self.previous_row = self.row
-            self.row = random.randint(0, self.cfg.row_count - 1)        
-            self.col = random.randint(0, self.cfg.col_count - 1)
-
-            self.state_changed = True
-
-            if self.previous_col == self.col:
-                if self.previous_row == self.row:
-                    self.state_changed = False
-
-    def random_walk(self):
-        if not self.actorType == ActorType.WALL:   
-            self.previous_col = self.col
-            self.previous_row = self.row
-            
-            x = random.randint(-1 , 1)        
-
-            if self.dir == 1:
-                self.row -= 1
-                self.col += x
-
-            if self.dir == 2:
-                self.row += x
-                self.col += 1
-
-            if self.dir == 3:
-                self.row += 1
-                self.col += x
-
-            if self.dir == 4:
-                self.row += x
-                self.col -= 1
-
-
-            if self.col < 0:
-                self.col = self.cfg.col_count
-
-            if self.row == 0:
-                self.row = self.cfg.row_count
-
-            if self.col > self.cfg.col_count:
-                self.col = 0
-
-            if self.row > self.cfg.row_count:
-                self.row = 0
-
-            
-
-            self.state_changed = True
-
-            if self.previous_col == self.col:
-                if self.previous_row == self.row:
-                    self.state_changed = False
 
 
     def get_small_change(self, max):
@@ -106,7 +49,8 @@ class WalkingActor:
         else:
             return value - 2 * value
 
-    def straight_line_walk(self):
+
+    def update(self):
         if not self.actorType == ActorType.WALL:
             self.previous_col = self.col
             self.previous_row = self.row
